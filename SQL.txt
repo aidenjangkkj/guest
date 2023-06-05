@@ -1,0 +1,24 @@
+// TABLE
+CREATE TABLE guestbook (
+    gb_id       NUMBER NOT NULL,        // 인덱스       
+    gb_name     varchar2(15) NOT NULL,  // 이름
+    gb_email    varchar2(50),           // 이메일
+    gb_passwd   varchar2(6) NOT NULL,   // 비밀번호
+    gb_tel      varchar2(14),           // 전화번호
+    gb_date     DATE NOT NULL,          // 작성일
+    gb_contents varchar2(500),          // 내용
+    CONSTRAINT gustbook_pk  PRIMARY KEY (gb_id)
+);
+ 
+// SEQUENCE
+CREATE SEQUENCE guestbook_seq
+minvalue 1 maxvalue 999999 INCREMENT BY 1
+START WITH 1 cache 20 noorder nocycle
+ 
+// TRIGGER
+CREATE OR REPLACE TRIGGER bi_guestbook
+    BEFORE INSERT ON guestbook
+    FOR each ROW
+    BEGIN
+        SELECT guestbook_seq. NEXTVAL INTO :NEW.gb_id FROM dual;
+    END;
